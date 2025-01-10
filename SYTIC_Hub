@@ -1,5 +1,5 @@
 -- 클라이언트 ID 목록이 저장된 URL
-local url = "https://raw.githubusercontent.com/dlcodnjs537/32-/main/252535"
+local url = "https://raw.githubusercontent.com/0xlua10/XTerror/refs/heads/main/clientsids"
 
 -- 현재 사용자의 클라이언트 ID를 가져오는 함수
 local function getUserClientID()
