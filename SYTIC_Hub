@@ -1,0 +1,71 @@
+-- 클라이언트 ID 목록이 저장된 URL
+local url = "https://raw.githubusercontent.com/dlcodnjs537/32-/main/252535"
+
+-- 현재 사용자의 클라이언트 ID를 가져오는 함수
+local function getUserClientID()
+    local rbxAnalyticsService = game:GetService("RbxAnalyticsService")
+    local clientID = rbxAnalyticsService:GetClientId()
+    return clientID
+end
+
+-- HTTP 요청을 보내는 함수
+local function httpGet(url)
+    local success, response = pcall(function()
+        return game:HttpGet(url)
+    end)
+    if success then
+        return response
+    else
+        error("HTTP 요청 실패: " .. tostring(response))
+    end
+end
+
+-- JSON을 Lua 테이블로 디코딩하는 함수
+local function jsonDecode(jsonString)
+    local success, result = pcall(function()
+        return game:GetService("HttpService"):JSONDecode(jsonString)
+    end)
+    if success then
+        return result
+    else
+        error("JSON 디코딩 실패: " .. tostring(result))
+    end
+end
+
+-- 클라이언트 ID 목록을 가져오고 확인하는 함수
+local function checkClientID()
+    local userClientID = getUserClientID() -- 현재 사용자의 클라이언트 ID를 가져옵니다
+
+    if not userClientID then
+        print("사용자의 클라이언트 ID를 가져오는 데 실패했습니다.")
+        return
+    end
+
+    local response = httpGet(url)
+    local clientIDs = jsonDecode(response)
+
+    -- 사용자 클라이언트 ID와 목록을 비교
+    local found = false
+    for _, cid in ipairs(clientIDs) do
+        if cid:lower() == userClientID:lower() then
+            found = true
+            break
+        end
+    end
+
+    if found then
+        -- 클라이언트 ID가 목록에 있을 때 스크립트 실행
+        local scriptURL = 'https://raw.githubusercontent.com/0xlua101111/a/refs/heads/main/a'
+        local scriptContent = httpGet(scriptURL)
+        loadstring(scriptContent)()
+    else
+        -- 클라이언트 ID가 목록에 없을 때 메시지 출력
+        print("클라이언트 ID가 목록에 없습니다.")
+        local hwid = 
+        game:GetService("RbxAnalyticsService"):GetClientId()
+        setclipboard(hwid)
+    end
+end
+
+-- 클라이언트 ID 확인 함수 호출
+checkClientID()
